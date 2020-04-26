@@ -27,10 +27,10 @@ class Arena extends Game {
     pieces = List<Piece>();
     rand = Random();
     resize(await Flame.util.initialDimensions());
-    bg = Background(this);
-    spawnPieces();
-  }
 
+    //spawnPieces();
+  }
+  /*
   void spawnPieces() {
     //currently random spawn
     double x = rand.nextDouble() * (screenSize.width - tileSize);
@@ -45,6 +45,7 @@ class Arena extends Game {
     }
     // pieces.add(Piece(this, x, y));
   }
+  */
 
   void render(Canvas canvas) {
     bg.render(canvas);
@@ -58,6 +59,14 @@ class Arena extends Game {
 
   void update(double t) {
     pieces.forEach((Piece piece) => piece.update(t));
+
+    pieces.forEach((Piece piece) {
+      pieces.forEach((Piece otherPiece) {
+        if (piece != otherPiece) {
+          piece.handleCollision(otherPiece.pieceRect);
+        }
+      });
+    });
   }
 
   void resize(Size size) {
@@ -66,10 +75,20 @@ class Arena extends Game {
   }
 
   void onTapDown(TapDownDetails d) {
+    bool onPiece = false;
     pieces.forEach((Piece piece) {
       if (piece.pieceRect.contains(d.globalPosition)) {
-        piece.onTapDown();
+        piece.set0();
+        piece.piecePaint.color = Color(0xffff4757);
+        onPiece = true;
       }
     });
+    if (!onPiece) {
+      addPiece(d.globalPosition.dx, d.globalPosition.dy);
+    }
+  }
+
+  void addPiece(x, y) {
+    pieces.add(Piece(this, x, y));
   }
 }

@@ -22,4 +22,9 @@ void main() async {
   TapGestureRecognizer tapper = TapGestureRecognizer();
   tapper.onTapDown = game.onTapDown;
   flame.addGestureRecognizer(tapper);
+
+  PanGestureRecognizer pan = PanGestureRecognizer();
+  //pan.onDown() = game.onDragDown();
+  //pan.onEnd() = game.onDragEnd();
+
 }
