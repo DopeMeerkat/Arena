@@ -1,24 +1,24 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:flame/sprite.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
-import 'arena.dart';
+import 'package:arena/arena.dart';
 
 class Piece {
   final Arena game;
+  Sprite pieceSprite;
   Rect pieceRect;
-  Paint piecePaint;
   bool isMoving = false;
 
   Piece(this.game, double x, double y) {
+    pieceSprite = Sprite('pieces/penguin.png');
     pieceRect = Rect.fromLTWH(x, y, game.tileSize, game.tileSize);
-    piecePaint = Paint();
-    piecePaint.color = Color(0xff6ab04c);
   }
 
   void render(Canvas c) {
-    c.drawRect(pieceRect, piecePaint);
+    pieceSprite.renderRect(c, pieceRect.inflate(2));
   }
 
   void update(double t) {
@@ -31,20 +31,23 @@ class Piece {
       pieceRect = pieceRect.translate(dx, dy);
 
       if (pieceRect.top > game.screenSize.height) {
-        pieceRect = Rect.fromLTWH(pieceRect.left, 0, game.tileSize, game.tileSize);
+        pieceRect =
+            Rect.fromLTWH(pieceRect.left, 0, game.tileSize, game.tileSize);
       } else if (pieceRect.right > game.screenSize.width) {
-        pieceRect = Rect.fromLTWH(0, pieceRect.top, game.tileSize, game.tileSize);
+        pieceRect =
+            Rect.fromLTWH(0, pieceRect.top, game.tileSize, game.tileSize);
       } else if (pieceRect.bottom < 0) {
-        pieceRect = Rect.fromLTWH(pieceRect.left, game.screenSize.height, game.tileSize, game.tileSize);
+        pieceRect = Rect.fromLTWH(pieceRect.left, game.screenSize.height,
+            game.tileSize, game.tileSize);
       } else if (pieceRect.left < 0) {
-        pieceRect = Rect.fromLTWH(20, pieceRect.top, game.tileSize, game.tileSize);
+        pieceRect =
+            Rect.fromLTWH(20, pieceRect.top, game.tileSize, game.tileSize);
       }
     }
   }
 
   void onTapDown() {
     isMoving = true;
-    piecePaint.color = Color(0xffff4757);
     game.spawnPieces();
     game.spawnPieces();
   }

@@ -1,3 +1,4 @@
+import 'package:flame/flame.dart';
 import 'package:flame/util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,10 @@ void main() async {
   await flame.fullScreen();
   await flame.setOrientation(DeviceOrientation.portraitUp);
 
+  Flame.images.loadAll(<String>[
+    'bg/icy_bg.jpg',
+    'pieces/penguin.png',
+  ]);
   Arena game = Arena();
   runApp(game.widget);
 
