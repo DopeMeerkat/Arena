@@ -13,7 +13,7 @@ class Piece {
   bool isMoving = false;
 
   Piece(this.game, double x, double y) {
-    pieceSprite = Sprite('pieces/penguin.png');
+    // pieceSprite = Sprite('pieces/penguin.png');
     pieceRect = Rect.fromLTWH(x, y, game.tileSize, game.tileSize);
   }
 

@@ -43,6 +43,7 @@ flutter:
   assets:
     - assets/images/bg/icy_bg.jpg
     - assets/images/pieces/penguin.png
+    - assets/images/pieces/penguin2.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

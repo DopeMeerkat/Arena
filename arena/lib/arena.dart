@@ -2,11 +2,14 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flame/box2d/box2d_component.dart';
 import 'package:flame/box2d/box2d_game.dart';
-import 'package:arena/components/background.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
+
+import 'package:arena/components/background.dart';
 import 'package:arena/components/piece.dart';
+import 'package:arena/components/penguin.dart';
+import 'package:arena/components/penguin2.dart';
 
 class Arena extends Game {
   Size screenSize;
@@ -29,9 +32,18 @@ class Arena extends Game {
   }
 
   void spawnPieces() {
+    //currently random spawn
     double x = rand.nextDouble() * (screenSize.width - tileSize);
     double y = rand.nextDouble() * (screenSize.height - tileSize);
-    pieces.add(Piece(this, x, y));
+    switch (rand.nextInt(2)) {
+      case 0:
+        pieces.add(Penguin(this, x, y));
+        break;
+      case 1:
+        pieces.add(Penguin2(this, x, y));
+        break;
+    }
+    // pieces.add(Piece(this, x, y));
   }
 
   void render(Canvas canvas) {

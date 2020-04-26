@@ -14,6 +14,7 @@ void main() async {
   Flame.images.loadAll(<String>[
     'bg/icy_bg.jpg',
     'pieces/penguin.png',
+    'pieces/penguin2.png',
   ]);
   Arena game = Arena();
   runApp(game.widget);
