@@ -11,9 +11,9 @@ class Background {
     bgSprite = Sprite('bg/icy_bg.jpg');
     bgRect = Rect.fromLTWH(
       0,
-      game.screenSize.height - (game.tileSize * 23),
-      game.tileSize * 9,
-      game.tileSize * 23,
+      game.screenSize.height - (game.pieceSize * 23),
+      game.pieceSize * 9,
+      game.pieceSize * 23,
     );
   }
 

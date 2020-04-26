@@ -5,6 +5,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:arena/arena.dart';
+import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart';
 
 class Piece {
@@ -12,15 +13,17 @@ class Piece {
   Sprite pieceSprite;
   Rect pieceRect;
   Paint piecePaint;
-  Vector2 direction;
+  Vector2 velocity;
+  final decelleration = 3.0;
+  bool moving;
 
   Piece(this.game, double x, double y) {
-    // pieceSprite = Sprite('pieces/penguin.png');
-    pieceRect = Rect.fromLTWH(x, y, game.tileSize, game.tileSize);
+    pieceRect = Rect.fromLTWH(x, y, game.pieceSize, game.pieceSize);
     piecePaint = Paint();
     piecePaint.color = Color(0xff6ab04c);
-
-    direction = getRandDirection();
+    moving = false;
+    velocity = Vector2(0, 0);
+    //velocity = getRandDirection();
   }
 
   Vector2 getRandDirection() {
@@ -32,13 +35,19 @@ class Piece {
     return dir;
   }
 
-  void set0() {
-    direction = Vector2(0, 0);
+  void setMoving(b) {
+    moving = b;
   }
 
-  void handleCollision(Rect otherRect) {
-    if (pieceRect.overlaps(otherRect)) {
-      direction = getRandDirection();
+  void setVelocity(x, y) {
+    velocity = Vector2(x, y);
+  }
+
+  void handleCollision(Piece otherPiece) {
+    if (pieceRect.overlaps(otherPiece.pieceRect)) {
+      //velocity = getRandDirection();
+      moving = true;
+      velocity.negate();
     }
   }
 
@@ -47,12 +56,39 @@ class Piece {
   }
 
   void update(double t) {
-    pieceRect = pieceRect.translate(direction.x, direction.y);
-    if (pieceRect.top > game.screenSize.height || pieceRect.bottom < 0) {
-      direction.y = -1 * direction.y;
+    if (moving) {
+      updateVelocity(t);
+      pieceRect = pieceRect.translate(velocity.x, velocity.y);
+
+      if (pieceRect.top > game.screenSize.height || pieceRect.bottom < 0) {
+        velocity.y = -1 * velocity.y;
+      }
+      if (pieceRect.left < 0 || pieceRect.right > game.screenSize.width) {
+        velocity.x = -1 * velocity.x;
+      }
     }
-    if (pieceRect.left < 0 || pieceRect.right > game.screenSize.width) {
-      direction.x = -1 * direction.x;
+  }
+
+
+  //calculates velocity so it will end at the end of the arrow
+  Vector calcInitialVelocity(double startx, double starty, double endx, double endy) {
+    Vector2 direction = Vector2(endx - startx, endy - starty);
+    double distance = direction.length;
+    direction.normalize(); //make unit
+    direction.scale(sqrt(2 * decelleration * distance));
+    return direction;
+  }
+
+  void updateVelocity(t) {
+    //make it so calculation involves time later
+    double newMagnitude = velocity.length - (decelleration);
+    print(velocity.length);
+    if (newMagnitude > 0) {
+      velocity.normalize();
+      velocity.scale(newMagnitude);
+    } else {
+      velocity = Vector2(0, 0);
+      moving = false;
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flame/flame.dart';
+import 'package:flame/gestures.dart';
 import 'package:flame/util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,13 @@ void main() async {
   flame.addGestureRecognizer(tapper);
 
   PanGestureRecognizer pan = PanGestureRecognizer();
-  //pan.onDown() = game.onDragDown();
-  //pan.onEnd() = game.onDragEnd();
-
+  pan.onStart = game.onPanStart;
+  pan.onUpdate = game.onDragUpdate;
+  pan.onEnd = game.onPanEnd;
+  flame.addGestureRecognizer(pan);
+  /*
+  DoubleTapGestureRecognizer doubleTap = DoubleTapGestureRecognizer();
+  doubleTap.onDoubleTap = game.startPieces;
+  flame.addGestureRecognizer(doubleTap);
+  */
 }
