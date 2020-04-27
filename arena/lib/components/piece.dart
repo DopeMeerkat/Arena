@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:arena/arena.dart';
+import 'package:arena/components/arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -16,6 +18,7 @@ class Piece {
   Vector2 velocity;
   final decelleration = 3.0;
   bool moving;
+  Arrow arrow;
 
   Piece(this.game, double x, double y) {
     pieceRect = Rect.fromLTWH(x, y, game.pieceSize, game.pieceSize);
@@ -23,6 +26,7 @@ class Piece {
     piecePaint.color = Color(0xff6ab04c);
     moving = false;
     velocity = Vector2(0, 0);
+    arrow = Arrow(game, this);
     //velocity = getRandDirection();
   }
 
@@ -51,8 +55,17 @@ class Piece {
     }
   }
 
+  void updateArrow(double x, double y) {
+    arrow.setTarget(x, y);
+  }
+
+  //void resetArrow()
+
   void render(Canvas c) {
     pieceSprite.renderRect(c, pieceRect.inflate(2));
+
+    //pieceSprite.renderCentered(c, Position(pieceRect.left, pieceRect.top));
+    arrow.render(c);
   }
 
   void update(double t) {
@@ -82,7 +95,7 @@ class Piece {
   void updateVelocity(t) {
     //make it so calculation involves time later
     double newMagnitude = velocity.length - (decelleration);
-    print(velocity.length);
+    //print(velocity.length);
     if (newMagnitude > 0) {
       velocity.normalize();
       velocity.scale(newMagnitude);
