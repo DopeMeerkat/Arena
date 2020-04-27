@@ -12,6 +12,7 @@ import 'package:arena/components/piece.dart';
 import 'package:arena/components/penguin.dart';
 import 'package:arena/components/penguin2.dart';
 import 'package:arena/components/run-btn.dart';
+import 'package:arena/components/arrow.dart';
 
 /*
   How the game currently works:
@@ -136,7 +137,7 @@ class Arena extends Game {
         d.globalPosition.dx,
         d.globalPosition.dy
       );
-
+      dragged.updateArrow(d.globalPosition.dx, d.globalPosition.dy);
     }
   }
 
