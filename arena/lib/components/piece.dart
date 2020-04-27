@@ -69,9 +69,9 @@ class Piece {
     }
   }
 
+
   //calculates velocity so it will end at the end of the arrow
-  Vector calcInitialVelocity(
-      double startx, double starty, double endx, double endy) {
+  Vector calcInitialVelocity(double startx, double starty, double endx, double endy) {
     Vector2 direction = Vector2(endx - startx, endy - starty);
     double distance = direction.length;
     direction.normalize(); //make unit
@@ -82,7 +82,7 @@ class Piece {
   void updateVelocity(t) {
     //make it so calculation involves time later
     double newMagnitude = velocity.length - (decelleration);
-    // print(velocity.length);
+    print(velocity.length);
     if (newMagnitude > 0) {
       velocity.normalize();
       velocity.scale(newMagnitude);

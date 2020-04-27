@@ -16,8 +16,6 @@ void main() async {
     'bg/icy_bg.jpg',
     'pieces/penguin.png',
     'pieces/penguin2.png',
-    'util/start.png',
-    'util/arrow.png',
   ]);
   Arena game = Arena();
   runApp(game.widget);

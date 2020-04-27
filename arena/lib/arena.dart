@@ -12,7 +12,6 @@ import 'package:arena/components/piece.dart';
 import 'package:arena/components/penguin.dart';
 import 'package:arena/components/penguin2.dart';
 import 'package:arena/components/run-btn.dart';
-import 'package:arena/components/arrow.dart';
 
 /*
   How the game currently works:
@@ -33,7 +32,6 @@ class Arena extends Game {
   Random rand;
   RunBtn button; //button to run simulation
   Piece dragged; //current piece being dragged
-  Arrow arrow;
   Vector2 dragEndpoint;
   // Box2DComponent piece;
   // Box2DGame(Box2DComponent piece) {}
@@ -48,32 +46,29 @@ class Arena extends Game {
     resize(await Flame.util.initialDimensions());
     bg = Background(this);
     button = RunBtn(this, screenSize.width * 1 / 3, screenSize.height * 5 / 6);
-    arrow = Arrow(this);
     //spawnPieces();
   }
 
-  // void spawnPieces() {
-  //   //currently random spawn
-  //   //randomly spawn 3
-  //   double x = rand.nextDouble() * (screenSize.width - pieceSize);
-  //   double y = rand.nextDouble() * (screenSize.height - pieceSize);
-  //   switch (rand.nextInt(2)) {
-  //     case 0:
-  //       pieces.add(Penguin(this, x, y));
-  //       break;
-  //     case 1:
-  //       pieces.add(Penguin2(this, x, y));
-  //       break;
-  //   }
-  //   // pieces.add(Piece(this, x, y));
-  // }
+  void spawnPieces() {
+    //currently random spawn
+    //randomly spawn 3
+    double x = rand.nextDouble() * (screenSize.width - pieceSize);
+    double y = rand.nextDouble() * (screenSize.height - pieceSize);
+    switch (rand.nextInt(2)) {
+      case 0:
+        pieces.add(Penguin(this, x, y));
+        break;
+      case 1:
+        pieces.add(Penguin2(this, x, y));
+        break;
+    }
+    // pieces.add(Piece(this, x, y));
+  }
 
   void render(Canvas canvas) {
     bg.render(canvas);
     button.render(canvas);
     pieces.forEach((Piece piece) => piece.render(canvas));
-
-    arrow.render(canvas);
   }
 
   void update(double t) {
@@ -99,14 +94,14 @@ class Arena extends Game {
       startPieces();
     } else {
       bool onPiece = false;
-      for (Piece piece in pieces) {
+      pieces.forEach((Piece piece) {
         if (piece.pieceRect.contains(d.globalPosition)) {
+          //piece.piecePaint.color = Color(0xffff4757);
+          //piece.moving = true;
           onPiece = true;
-          break;
         }
-      }
-      if (!onPiece) {
-        //new space
+      });
+      if (!onPiece) { //new space
         addPiece(d.globalPosition.dx, d.globalPosition.dy);
       }
     }
@@ -124,20 +119,24 @@ class Arena extends Game {
   }
 
   void onPanStart(DragStartDetails d) {
-    for (Piece piece in pieces) {
+    pieces.forEach((Piece piece) {
       if (piece.pieceRect.contains(d.globalPosition)) {
         dragged = piece;
-        break;
       }
-    }
+    });
   }
 
   void onDragUpdate(DragUpdateDetails d) {
     if (dragged != null) {
       //double x = d.globalPosition.dx - dragged.pieceRect.left;
       //double y = d.globalPosition.dy - dragged.pieceRect.top;
-      dragEndpoint = dragged.calcInitialVelocity(dragged.pieceRect.left,
-          dragged.pieceRect.top, d.globalPosition.dx, d.globalPosition.dy);
+      dragEndpoint = dragged.calcInitialVelocity(
+        dragged.pieceRect.left,
+        dragged.pieceRect.top,
+        d.globalPosition.dx,
+        d.globalPosition.dy
+      );
+
     }
   }
 

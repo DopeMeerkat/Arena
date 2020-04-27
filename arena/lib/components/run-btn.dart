@@ -11,16 +11,19 @@ import 'package:vector_math/vector_math.dart';
 class RunBtn {
   final Arena game;
   Rect btnRect;
-  Sprite btnSprite;
+  Paint btnPaint;
 
   RunBtn(this.game, double x, double y) {
-    btnSprite = Sprite('util/start.png');
     btnRect = Rect.fromLTWH(x, y, game.pieceSize * 3, game.pieceSize);
+    btnPaint = Paint();
+    btnPaint.color = Color(0xffffffff);
   }
 
   void render(Canvas c) {
-    btnSprite.renderRect(c, btnRect);
+    c.drawRect(btnRect, btnPaint);
   }
 
-  void update(double t) {}
+  void update(double t) {
+    
+  }
 }
