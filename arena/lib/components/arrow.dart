@@ -1,38 +1,34 @@
-import 'dart:math';
 import 'dart:ui';
+import 'package:flame/components/component.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
-import 'package:flutter/gestures.dart';
 import 'package:arena/arena.dart';
-import 'package:arena/components/piece.dart';
-import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math.dart';
 
 class Arrow {
+  Sprite arrowSprite;
+  Rect arrowRect;
   final Arena game;
-  Piece piece;
-  Paint arrowPaint;
-  double targetx;
-  double targety;
+  var arrowComponent;
 
-  Arrow(this.game, this.piece) {
-    targetx = piece.pieceRect.left;
-    targety = piece.pieceRect.top;
-    arrowPaint = Paint();
-    arrowPaint.color = Color(0xff6ab04c);
+  Arrow(this.game) {
+    arrowSprite = Sprite('util/arrow.png');
+    // arrowRect = Rect.fromLTWH(
+    //   0,
+    //   game.screenSize.height - (game.pieceSize * 23),
+    //   game.pieceSize * 9,
+    //   game.pieceSize * 23,
+    // );
+    arrowComponent = new SpriteComponent.fromSprite(game.pieceSize * 3,
+        game.pieceSize * 9, arrowSprite); // width, height, sprite
+
+    // screen coordinates
+    arrowComponent.x = 200.0; // 0 by default
+    arrowComponent.y = 200.0; // 0 by default
+    arrowComponent.angle = 0.0; // 0 by default
   }
 
   void render(Canvas c) {
-    c.drawLine(Offset(piece.pieceRect.left, piece.pieceRect.top),
-      Offset(targetx, targety), arrowPaint);
+    arrowComponent.render(c);
   }
 
-  void setTarget(double x, double y) {
-    targetx = x;
-    targety = y;
-  }
-
-  void update(double t) {
-  }
+  void update(double t) {}
 }

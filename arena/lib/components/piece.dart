@@ -26,7 +26,6 @@ class Piece {
     piecePaint.color = Color(0xff6ab04c);
     moving = false;
     velocity = Vector2(0, 0);
-    arrow = Arrow(game, this);
     //velocity = getRandDirection();
   }
 
@@ -55,10 +54,6 @@ class Piece {
     }
   }
 
-  void updateArrow(double x, double y) {
-    arrow.setTarget(x, y);
-  }
-
   //void resetArrow()
 
   void render(Canvas c) {
@@ -82,9 +77,9 @@ class Piece {
     }
   }
 
-
   //calculates velocity so it will end at the end of the arrow
-  Vector calcInitialVelocity(double startx, double starty, double endx, double endy) {
+  Vector calcInitialVelocity(
+      double startx, double starty, double endx, double endy) {
     Vector2 direction = Vector2(endx - startx, endy - starty);
     double distance = direction.length;
     direction.normalize(); //make unit
@@ -95,7 +90,7 @@ class Piece {
   void updateVelocity(t) {
     //make it so calculation involves time later
     double newMagnitude = velocity.length - (decelleration);
-    //print(velocity.length);
+    // print(velocity.length);
     if (newMagnitude > 0) {
       velocity.normalize();
       velocity.scale(newMagnitude);
