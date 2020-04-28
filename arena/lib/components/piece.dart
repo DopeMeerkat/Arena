@@ -19,6 +19,7 @@ class Piece {
   final decelleration = 3.0;
   bool moving;
   Arrow arrow;
+  double angle;
 
   Piece(this.game, double x, double y) {
     pieceRect = Rect.fromLTWH(x, y, game.pieceSize, game.pieceSize);
@@ -26,6 +27,7 @@ class Piece {
     piecePaint.color = Color(0xff6ab04c);
     moving = false;
     velocity = Vector2(0, 0);
+    arrow = Arrow(game);
     //velocity = getRandDirection();
   }
 
@@ -57,10 +59,9 @@ class Piece {
   //void resetArrow()
 
   void render(Canvas c) {
+    arrow.render(c); //add vector
     pieceSprite.renderRect(c, pieceRect.inflate(2));
-
-    //pieceSprite.renderCentered(c, Position(pieceRect.left, pieceRect.top));
-    arrow.render(c);
+    // pieceSprite.renderCentered(c, Position(pieceRect.left, pieceRect.top));
   }
 
   void update(double t) {
@@ -75,6 +76,7 @@ class Piece {
         velocity.x = -1 * velocity.x;
       }
     }
+    arrow.update(t, pieceRect.left, pieceRect.top, angle);
   }
 
   //calculates velocity so it will end at the end of the arrow

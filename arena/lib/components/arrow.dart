@@ -8,27 +8,28 @@ class Arrow {
   Rect arrowRect;
   final Arena game;
   var arrowComponent;
+  bool visible;
+  double height;
 
   Arrow(this.game) {
+    // visible = false;
+    visible = true;
     arrowSprite = Sprite('util/arrow.png');
-    // arrowRect = Rect.fromLTWH(
-    //   0,
-    //   game.screenSize.height - (game.pieceSize * 23),
-    //   game.pieceSize * 9,
-    //   game.pieceSize * 23,
-    // );
-    arrowComponent = new SpriteComponent.fromSprite(game.pieceSize * 3,
-        game.pieceSize * 9, arrowSprite); // width, height, sprite
-
-    // screen coordinates
-    arrowComponent.x = 200.0; // 0 by default
-    arrowComponent.y = 200.0; // 0 by default
-    arrowComponent.angle = 0.0; // 0 by default
+    height = game.pieceSize * 9;
+    arrowComponent = new SpriteComponent.fromSprite(
+        game.pieceSize * 3, height, arrowSprite); // width, height, sprite
   }
 
   void render(Canvas c) {
-    arrowComponent.render(c);
+    if (visible) {
+      arrowComponent.render(c);
+    }
   }
 
-  void update(double t) {}
+  void update(double t, x, y, angle) {
+    arrowComponent.x = x;
+    arrowComponent.y = y;
+    arrowComponent.angle = angle;
+    // arrowComponent.height = mag;
+  }
 }

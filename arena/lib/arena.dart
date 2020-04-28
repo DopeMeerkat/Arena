@@ -33,7 +33,6 @@ class Arena extends Game {
   Random rand;
   RunBtn button; //button to run simulation
   Piece dragged; //current piece being dragged
-  Arrow arrow;
   Vector2 dragEndpoint;
   // Box2DComponent piece;
   // Box2DGame(Box2DComponent piece) {}
@@ -48,44 +47,41 @@ class Arena extends Game {
     resize(await Flame.util.initialDimensions());
     bg = Background(this);
     button = RunBtn(this, screenSize.width * 1 / 3, screenSize.height * 5 / 6);
-    arrow = Arrow(this);
-    //spawnPieces();
+    spawnPieces();
   }
 
-  // void spawnPieces() {
-  //   //currently random spawn
-  //   //randomly spawn 3
-  //   double x = rand.nextDouble() * (screenSize.width - pieceSize);
-  //   double y = rand.nextDouble() * (screenSize.height - pieceSize);
-  //   switch (rand.nextInt(2)) {
-  //     case 0:
-  //       pieces.add(Penguin(this, x, y));
-  //       break;
-  //     case 1:
-  //       pieces.add(Penguin2(this, x, y));
-  //       break;
-  //   }
-  //   // pieces.add(Piece(this, x, y));
-  // }
+  void spawnPieces() {
+    //currently random spawn
+    //randomly spawn 3
+    double x = rand.nextDouble() * (screenSize.width - pieceSize);
+    double y = rand.nextDouble() * (screenSize.height - pieceSize);
+    switch (rand.nextInt(2)) {
+      case 0:
+        pieces.add(Penguin(this, x, y));
+        break;
+      case 1:
+        pieces.add(Penguin2(this, x, y));
+        break;
+    }
+    // pieces.add(Piece(this, x, y));
+  }
 
   void render(Canvas canvas) {
     bg.render(canvas);
     button.render(canvas);
     pieces.forEach((Piece piece) => piece.render(canvas));
-
-    arrow.render(canvas);
   }
 
   void update(double t) {
     pieces.forEach((Piece piece) => piece.update(t));
 
-    pieces.forEach((Piece piece) {
-      pieces.forEach((Piece otherPiece) {
-        if (piece != otherPiece) {
-          piece.handleCollision(otherPiece);
-        }
-      });
-    });
+    // pieces.forEach((Piece piece) {
+    //   pieces.forEach((Piece otherPiece) {
+    //     if (piece != otherPiece) {
+    //       piece.handleCollision(otherPiece);
+    //     }
+    //   });
+    // });
   }
 
   void resize(Size size) {
@@ -138,6 +134,9 @@ class Arena extends Game {
       //double y = d.globalPosition.dy - dragged.pieceRect.top;
       dragEndpoint = dragged.calcInitialVelocity(dragged.pieceRect.left,
           dragged.pieceRect.top, d.globalPosition.dx, d.globalPosition.dy);
+
+      var pos = Vector2(dragged.pieceRect.left, dragged.pieceRect.top);
+      dragged.angle = pos.angleToSigned(dragEndpoint);
     }
   }
 
