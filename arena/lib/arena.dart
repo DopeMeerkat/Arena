@@ -47,7 +47,7 @@ class Arena extends Game {
     resize(await Flame.util.initialDimensions());
     bg = Background(this);
     button = RunBtn(this, screenSize.width * 1 / 3, screenSize.height * 5 / 6);
-    spawnPieces();
+    // spawnPieces();
   }
 
   void spawnPieces() {
@@ -91,6 +91,7 @@ class Arena extends Game {
 
   void onTapDown(TapDownDetails d) {
     //on button
+    print("tapped");
     if (button.btnRect.contains(d.globalPosition)) {
       startPieces();
     } else {
@@ -102,6 +103,7 @@ class Arena extends Game {
         }
       }
       if (!onPiece) {
+        print("not on pieces");
         //new space
         addPiece(d.globalPosition.dx, d.globalPosition.dy);
       }
@@ -136,7 +138,8 @@ class Arena extends Game {
           dragged.pieceRect.top, d.globalPosition.dx, d.globalPosition.dy);
 
       var pos = Vector2(dragged.pieceRect.left, dragged.pieceRect.top);
-      dragged.angle = pos.angleToSigned(dragEndpoint);
+      dragged.arrow.updateArrow(dragged.pieceRect.left, dragged.pieceRect.top,
+          pos.angleToSigned(dragEndpoint), dragEndpoint.length);
     }
   }
 

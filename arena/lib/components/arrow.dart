@@ -10,7 +10,7 @@ class Arrow {
   var arrowComponent;
   bool visible;
   double height;
-
+  double x, y, angle, mag;
   Arrow(this.game) {
     // visible = false;
     visible = true;
@@ -26,10 +26,17 @@ class Arrow {
     }
   }
 
-  void update(double t, x, y, angle) {
+  void updateArrow(double x, y, angle, mag) {
     arrowComponent.x = x;
     arrowComponent.y = y;
     arrowComponent.angle = angle;
-    // arrowComponent.height = mag;
+    arrowComponent.height = mag;
+  }
+
+  void update(double t) {
+    arrowComponent.x = x;
+    arrowComponent.y = y;
+    arrowComponent.angle = angle;
+    arrowComponent.height = mag;
   }
 }

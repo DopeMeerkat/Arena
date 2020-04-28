@@ -56,12 +56,11 @@ class Piece {
     }
   }
 
-  //void resetArrow()
-
   void render(Canvas c) {
     arrow.render(c); //add vector
     pieceSprite.renderRect(c, pieceRect.inflate(2));
     // pieceSprite.renderCentered(c, Position(pieceRect.left, pieceRect.top));
+    // arrow.render(c); //add vector
   }
 
   void update(double t) {
@@ -76,7 +75,6 @@ class Piece {
         velocity.x = -1 * velocity.x;
       }
     }
-    arrow.update(t, pieceRect.left, pieceRect.top, angle);
   }
 
   //calculates velocity so it will end at the end of the arrow
